@@ -1,0 +1,8 @@
+{
+  "name": "CineApp",
+  "app_id": "1b319905",
+  "type": "ionic-angular",
+  "integrations": {
+    "cordova": {}
+  }
+}
