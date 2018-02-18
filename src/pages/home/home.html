@@ -1,40 +1,77 @@
 <ion-header>
-    <ion-navbar>
+    <ion-navbar color="app">
+        <ion-buttons start >
+            <button ion-button icon-only clear (click)="cerrarSesion()">
+              <ion-icon name="exit" ios="ios-exit-outline" md="md-exit"></ion-icon>
+            </button>
+          </ion-buttons>
       <ion-title>
         Cartelera
       </ion-title>
+      <ion-buttons end>
+          <button ion-button icon-only clear (click)="crearPelicula()">
+              <ion-icon name="film" ios="ios-film-outline" md="md-film"></ion-icon>
+          </button>
+      </ion-buttons>
     </ion-navbar>
   </ion-header>
-  
-  <ion-content padding>
-    <ion-refresher (ionRefresher)="obtenerPeliculas($event)">
+
+  <ion-content padding class="background">
+    <ion-refresher (ionRefresh)="obtenerPeliculas($event)">
       <ion-refresher-content>
   
       </ion-refresher-content>
     </ion-refresher>
+    
+    <div *ngIf="(mensaje)" class="mensaje">
+        <h2>
+          <ion-icon name="information-circle"></ion-icon>
+          <br/>
+          {{mensaje}}
+          <br/><br/>
+          <button ion-button icon-start (click)="crearPelicula()">
+              <ion-icon name="film" ios="ios-film-outline" md="md-film"> </ion-icon> Crear película
+          </button>
+        </h2>
+      </div>
   
+    <ion-fab bottom right>
+        <button ion-fab icon-only (click)="irAComentarios()">
+          <ion-icon name="chatbubbles"></ion-icon>
+        </button>
+    </ion-fab>
+
     <ion-list>
-      <ion-item-sliding>
-        <ion-item>
-          <h2>Titulo de la pelicula</h2>
-          <h3>Categoria de la pelicula</h3>
-          <p><ion-icon name="star"></ion-icon></p>
-        </ion-item>
-  
-        <ion-item-options slide="right">
-          <button ion-buton icon-only color="danger" (click)="agregarFavoritos()">
-              <ion-icon name="heart"></ion-icon>
-          </button>
-  
-          <button ion-buton icon-only color="dark" (click)="eliminarFavoritos()">
-              <ion-icon name="thumbs-down"></ion-icon>
-          </button>
-  
-          <button ion-buton icon-only color="primary" (click)="agregarComentario()">
-              <ion-icon name="chatbubbles"></ion-icon>
-          </button>
-        </ion-item-options>
-      </ion-item-sliding>
-    </ion-list>
+        <ion-item-sliding *ngFor="let pelicula of peliculas">
+          <ion-item>
+            <ion-avatar item-left >
+              <img [src]="pelicula.imagen" class="pelicula">
+            </ion-avatar>
+            <h2><b>{{pelicula.titulo}}</b></h2>
+            <h3>{{pelicula.categoria}}</h3>
+            <p style="font-size:12px">
+              Puntuación: {{pelicula.puntuacion}}
+            </p>
+            <p>
+              <ion-icon [name]="estrella" *ngFor="let estrella of obtenerPuntuacion(pelicula.puntuacion)"></ion-icon>
+            </p>
+              <ion-icon *ngIf="compararFavoritos(pelicula.objectId)" name="heart" color="danger" item-right></ion-icon>
+          </ion-item>
+    
+          <ion-item-options slide="right">
+            <button *ngIf="!compararFavoritos(pelicula.objectId)" ion-button icon-only color="danger" (click)="agregarFavoritos(pelicula.objectId)">
+                <ion-icon name="heart"></ion-icon>
+            </button>
+    
+            <button *ngIf="compararFavoritos(pelicula.objectId)" ion-button icon-only color="dark" (click)="eliminarFavoritos(pelicula.objectId)">
+                <ion-icon name="thumbs-down"></ion-icon>
+            </button>
+    
+            <button ion-button icon-only color="primary" (click)="agregarComentario(pelicula)">
+                <ion-icon name="chatbubbles"></ion-icon>
+            </button>
+          </ion-item-options>
+        </ion-item-sliding>
+      </ion-list>
   </ion-content>
   

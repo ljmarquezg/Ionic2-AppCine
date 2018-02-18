@@ -1,0 +1,38 @@
+page-registro {
+    .item-radio ion-label, .radio, .item-radio{
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    .radio-icon{
+        display: none !important
+    }
+
+    .grid {
+        background: #c5c5c0;
+        border-radius: 25px;
+    }
+
+    .grid .label{
+        color:white
+    }
+
+    .grid img {
+        max-width: 100%;
+        border: 2px solid white;
+        border-radius: 50%;
+        filter: grayscale(1);
+        transition: ease 0.3s all;
+        
+    }
+
+    .grid .item-radio-checked img {
+        border: 2px solid royalblue;
+        filter: grayscale(0);
+        transition: ease 0.3s all;
+    }
+
+    .item-cover {
+        z-index: 100;
+    }
+
+}

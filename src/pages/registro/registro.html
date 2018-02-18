@@ -1,0 +1,61 @@
+<ion-header>
+    <ion-navbar color="app">
+      <ion-title>Regístrate</ion-title>
+    </ion-navbar>
+  </ion-header>
+  <ion-content padding class="form background">
+    <ion-list no-lines>
+        <ion-item class="logo">
+         <img src="/assets/imgs/logoapp.png">
+        </ion-item>
+      <ion-item>
+          <ion-label floating>Nombre</ion-label>
+          <ion-input type="text" [(ngModel)]="usuarioARegistrar.name"></ion-input>
+      </ion-item>
+
+      <ion-item>
+          <ion-label floating>Usuario</ion-label>
+          <ion-input type="text" [(ngModel)]="usuarioARegistrar.username"></ion-input>
+      </ion-item>
+
+      <ion-item>
+          <ion-label floating>Teléfono</ion-label>
+          <ion-input type="text" [(ngModel)]="usuarioARegistrar.telefono"></ion-input>
+      </ion-item>
+
+      <ion-item>
+          <ion-label floating>Email</ion-label>
+          <ion-input type="text" [(ngModel)]="usuarioARegistrar.email"></ion-input>
+      </ion-item>
+  
+      <ion-item>
+          <ion-label floating>Contraseña</ion-label>
+          <ion-input type="password" [(ngModel)]="usuarioARegistrar.password"></ion-input>
+      </ion-item>
+
+      <ion-item>
+          <ion-label floating>Repetir Contraseña</ion-label>
+          <ion-input type="password" [(ngModel)]="repetirPassword"></ion-input>
+      </ion-item>
+
+    </ion-list>
+
+    <ion-list radio-group [(ngModel)]="usuarioARegistrar.avatar">
+            <ion-grid>
+                <ion-row>
+                    <ion-list-header>Avatar</ion-list-header>
+                    <ion-col col-4 *ngFor="let avatar of avatares">
+                        <ion-item>
+                            <ion-label><img [src]="avatar.url"></ion-label>
+                            <ion-radio [value]="avatar.url"></ion-radio>
+                        </ion-item>
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
+    </ion-list>
+
+      <button ion-button block (click)="registrarUsuario()">Regístrate</button>
+      <button ion-button block clear color="light" (click)="irALogin()">¿Ya tienes cuenta? Inicia Sesión</button>
+
+  </ion-content>
+  

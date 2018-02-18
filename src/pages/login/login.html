@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-navbar color="app">
+    <ion-title>Iniciar Sesión</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content padding class="form background">
+  <ion-list no-lines>
+    <ion-item class="logo">
+      <img src="/assets/imgs/logoapp.png">
+    </ion-item>
+    <ion-item>
+        <ion-label floating>Usuario</ion-label>
+        <ion-input type="text" [(ngModel)]="usuarioALoguear.username"></ion-input>
+    </ion-item>
+
+    <ion-item>
+        <ion-label floating>Contraseña</ion-label>
+        <ion-input type="password" [(ngModel)]="usuarioALoguear.password"></ion-input>
+    </ion-item>
+  </ion-list>
+
+    <button ion-button block (click)="iniciarSesion()">Iniciar Sesion</button>
+    <button ion-button block clear color="light" (click)="irARegistro()">¿No tienes cuenta? Regístrate</button>
+</ion-content>

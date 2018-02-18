@@ -1,0 +1,53 @@
+<ion-header>
+
+  <ion-navbar color="app">
+    <ion-title>Comentarios</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding class="background">
+  <ion-refresher (ionRefresh)="obtenerComentarios($event)">
+    <ion-refresher-content>
+
+    </ion-refresher-content>
+  </ion-refresher>
+
+  <div *ngIf="(mensaje)" class="mensaje">
+    <h2>
+      <ion-icon name="information-circle"></ion-icon>
+      <br/>
+      {{mensaje}}
+      <br/>
+      <p>Acceda al menú de comentarios deslizando hacia la izquierda la película que desee comentar y posteriormente seleccione el botón comentarios</p>
+    </h2>
+  </div>
+
+  <ion-list>
+    <ion-item-sliding *ngFor="let comentario of comentarios">
+      <ion-item>
+        <ion-avatar item-left>
+          <img [src]="obtenerImagen(comentario.idPelicula)" class="pelicula">
+          <img [src]="obtenerAvatar(comentario.usuario)" class="avatar" [ngClass]="{online:usuarioEnLinea(comentario.usuario)}">
+        </ion-avatar>
+        <p class="slide-text" *ngIf="usuarioEnLinea(comentario.usuario)"> <ion-icon name="arrow-back"></ion-icon> Deslíce para editar </p>
+        <h2><b>{{comentario.pelicula}}</b></h2>
+        <h3>{{comentario.titulo_comentario}}</h3>
+        <p>{{comentario.comentario}}</p>
+      </ion-item>
+
+      <ion-item-options slide="right" *ngIf="usuarioEnLinea(comentario.usuario)">
+        <button ion-button icon-only color="secondary" (click)="editarComentario(comentario)">
+          <ion-icon name="create"></ion-icon>
+        </button>
+
+        <button ion-button icon-only color="danger" (click)="eliminarComentario(comentario)">
+            <ion-icon name="trash"></ion-icon>
+          </button>
+
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+
+</ion-content>
