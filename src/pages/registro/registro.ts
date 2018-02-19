@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, ToastController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, ToastController, LoadingController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { Headers, Http } from '@angular/http';
 import 'rxjs/add/operator/map';
@@ -30,7 +30,8 @@ export class RegistroPage {
               public navParams: NavParams,
               public http: Http,
               public alertCtrl: AlertController,
-              public toastCtrl: ToastController
+              public toastCtrl: ToastController,
+              public loadingCtrl: LoadingController
             ) {
               this.headers = new Headers;
               this.headers.append("X-Parse-REST-API-Key", "restAPIKey");
@@ -40,12 +41,28 @@ export class RegistroPage {
               this.obtenerAvatar();
   }
 
+/*=======================================================
+                    Navegación                        
+=======================================================*/
+irALogin(){
+  this.navCtrl.pop()
+}
+
+/*=======================================================
+        Obtener avatares desde la base de datos                     
+=======================================================*/
   obtenerAvatar(){
+    //Mostrar loader
+    let loader = this.loadingCtrl.create({content: "Cargando Avatares"});
+    loader.present();
+    //Consultar base de datos
     this.url="http://localhost:8080/Movies/classes/avatares"
     this.http.get(this.url, {headers: this.headers})
               .map(res => res.json())
               .subscribe( res =>{
-                this.avatares = res.results
+                //Ocultar loader
+                loader.dismiss();
+                this.avatares = res.results               
               }, err=> {
                 this.toastCtrl.create({
                   message: "Ha ocurrido un error al cargar los avatares. Intente de nuevo",
@@ -55,12 +72,13 @@ export class RegistroPage {
               })
   }
 
-  irALogin(){
-    this.navCtrl.pop()
-  }
-
+/*=======================================================
+                Registrar Usuario                        
+=======================================================*/
   registrarUsuario(){
+    //Verificar que contraseñas coincidan
     if (this.usuarioARegistrar.password !== this.repetirPassword) {
+      //Mostrar alerta de error
       this.alertCtrl.create({
         title: "Error",
         message: "Las contraseñas no coinciden. Por favor intente de nuevo.",
@@ -68,11 +86,20 @@ export class RegistroPage {
       }).present();
       return
     }
-
+    
     this.url = "http://localhost:8080/Movies/users"
-    this.http.post(this.url, this.usuarioARegistrar, {headers: this.headers})
+    //Enviar datos de formulario, enviando los campos username e emal en formato minúsculas
+    this.http.post(this.url, {username: this.usuarioARegistrar.username.toLocaleLowerCase(),
+                                password: this.usuarioARegistrar.password,
+                                name: this.usuarioARegistrar.name,
+                                email:this.usuarioARegistrar.email.toLocaleLowerCase(),
+                                telefono: this.usuarioARegistrar.telefono,
+                                avatar: this.usuarioARegistrar.avatar
+                              },
+                              {headers: this.headers})
               .map( res => res.json())
               .subscribe( res=> {
+                //Mostrar alerta de éxito
                 this.alertCtrl.create({
                   title: "Registro Exitoso",
                   message: "Usuario registrado con éxito. Ahora puedes iniciar sesión",
@@ -84,9 +111,13 @@ export class RegistroPage {
                   }]
                 }).present()
               }, err => {
+                //Mostrar alerta de error
+                err = err.json();
+                console.log(err)
                 this.alertCtrl.create({
                   title: "Error inesperado",
-                  message: "Ha ocurrido un error al registrar su usuario. Por favor intente de nuevo",
+                  subTitle: "Ha ocurrido un error al registrar su usuario. Por favor intente de nuevo. ",
+                  message: err.error,
                   buttons: [{text: "Aceptar"}]
                 }).present();
               });

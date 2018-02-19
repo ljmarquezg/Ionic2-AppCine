@@ -1,6 +1,6 @@
 export interface Pelicula {
     titulo: string;
     categoria: string;
-    puntuacion: DoubleRange;
-    imagen: string;
+    puntuacion: Number;
+    imagen?: string;
 }

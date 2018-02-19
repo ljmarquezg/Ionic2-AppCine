@@ -3,10 +3,16 @@
 }
 
 img.pelicula {
-	border-radius: 0px !important;
-	width: auto !important;
-	height: 85px !important;
-	box-shadow: 0px 2px 4px #444;
+    border-radius: 0px !important;
+    width: 60px !important;
+    height: 85px !important;
+    -webkit-box-shadow: 0px 2px 4px #444;
+    box-shadow: 0px 2px 4px #444;
+    border: solid 3px white;
+    background-image: url("/assets/imgs/poster.png");
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 .small{
     font-size: 0.7%;
@@ -39,6 +45,7 @@ ion-item-sliding {
     h2 {
         color: gray;
         padding: 5px;
+        width:100%;
     }
     p{
         font-size: 50%;

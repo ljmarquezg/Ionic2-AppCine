@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams, AlertController, ToastController, 
 import { Headers, Http } from '@angular/http';
 import { Storage } from "@ionic/storage";
 import 'rxjs/add/operator/map';
+import { Comentario } from '../../comentario-model';
 
 /**
  * Generated class for the ComentariosPage page.
@@ -21,7 +22,7 @@ export class ComentariosPage {
   url: string;
   headers: Headers;
   idUsuario: string;
-  comentarios: any[];
+  comentarios: Comentario[];
   usuarios: any[];
   peliculas: any[];
   localStorage: Storage;
@@ -125,10 +126,12 @@ export class ComentariosPage {
                   refresher.complete();
                 }
               }, err=>{
+                err = err.json()
                 loading.dismiss();
                 this.alertCtrl.create({
                   title: "Error",
-                  message: "Ha ocurrido un error al obtener las películas. Por favor intente más tarde",
+                  subTitle: "Ha ocurrido un error al obtener las películas. Por favor intente más tarde",
+                  message: err.error,
                   buttons: [
                     { text: "Aceptar" },
                     { 
@@ -162,6 +165,17 @@ export class ComentariosPage {
           {
             text: 'Actualizar',
             handler: data => {
+              if (data.titulo_comentario === "" || data.comentario === ""){
+                //Mostrar toaster con el error.
+                this.toastCtrl.create({
+                  message: "Error al guardar la película. No deben haber campos vacíos",
+                  position: "middle",
+                  showCloseButton: true,
+                  closeButtonText: "Cerrar",
+                  dismissOnPageChange: false,
+                }).present()
+                return
+              }
               let loading = this.loadingCtrl.create({ content: "Enviando comentario "})
               loading.present();
               //Acciones a realizar.
@@ -178,9 +192,10 @@ export class ComentariosPage {
                           this.obtenerComentarios(null);
                          
                         }, err =>{
+                          err = err.json()
                           loading.dismiss();
                           this.toastCtrl.create({
-                            message: "Ha ocurrido un error. Por favor intente más tarde",
+                            message: "Ha ocurrido un error. Por favor intente más tarde. " + err.error,
                             duration: 300,
                             position: "bottom",
                           }).present();
@@ -215,9 +230,10 @@ export class ComentariosPage {
                 }).present();
                 this.obtenerComentarios(null);
               }, err => {
+                err = err.json();
                 loader.dismiss()
                 this.toastCtrl.create({
-                  message: "Ha ocurrido un error al intentar eliminar el comentario. Por favor intente más tarde",
+                  message: "Ha ocurrido un error al intentar eliminar el comentario. Por favor intente más tarde. " + err.error,
                   duration: 300,
                   position: "bottom",
                 }).present();

@@ -27,9 +27,10 @@
   <ion-list>
     <ion-item-sliding *ngFor="let comentario of comentarios">
       <ion-item>
+          <ion-badge *ngIf="usuarioEnLinea(comentario.usuario)" style="position: absolute; right: 15px; font-size: 8px">Online</ion-badge>
         <ion-avatar item-left>
           <img [src]="obtenerImagen(comentario.idPelicula)" class="pelicula">
-          <img [src]="obtenerAvatar(comentario.usuario)" class="avatar" [ngClass]="{online:usuarioEnLinea(comentario.usuario)}">
+          <img [src]="obtenerAvatar(comentario.usuario)" class="avatar" [ngClass]="{online:usuarioEnLinea(comentario.usuario)}"> 
         </ion-avatar>
         <p class="slide-text" *ngIf="usuarioEnLinea(comentario.usuario)"> <ion-icon name="arrow-back"></ion-icon> Deslíce para editar </p>
         <h2><b>{{comentario.pelicula}}</b></h2>

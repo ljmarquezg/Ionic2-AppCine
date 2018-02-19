@@ -8,7 +8,7 @@
       <ion-title>
         Cartelera
       </ion-title>
-      <ion-buttons end>
+      <ion-buttons end *ngIf="(!mensaje)">
           <button ion-button icon-only clear (click)="crearPelicula()">
               <ion-icon name="film" ios="ios-film-outline" md="md-film"></ion-icon>
           </button>
@@ -29,17 +29,23 @@
           <br/>
           {{mensaje}}
           <br/><br/>
-          <button ion-button icon-start (click)="crearPelicula()">
-              <ion-icon name="film" ios="ios-film-outline" md="md-film"> </ion-icon> Crear película
+          <button ion-button icon-start (click)="inicializarPeliculas()">
+            <ion-icon name="film" ></ion-icon> Generar Películas
           </button>
         </h2>
       </div>
   
-    <ion-fab bottom right>
+    <ion-fab bottom right *ngIf="(!mensaje)">
         <button ion-fab icon-only (click)="irAComentarios()">
           <ion-icon name="chatbubbles"></ion-icon>
         </button>
     </ion-fab>
+
+  <ion-fab bottom left >
+     
+  </ion-fab>
+
+    
 
     <ion-list>
         <ion-item-sliding *ngFor="let pelicula of peliculas">
